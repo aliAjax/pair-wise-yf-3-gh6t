@@ -2,6 +2,7 @@ import type { SmellMemory } from '../utils/constants';
 import { getSeasonInfo, getSmellTypeInfo, getEmotionInfo } from '../utils/constants';
 import { formatDate, contrastTextColor } from '../utils/helpers';
 import { Pencil, Trash2, ChevronDown, ChevronUp, Heart } from 'lucide-react';
+import VersionHistory from './VersionHistory';
 
 interface Props {
   memory: SmellMemory;
@@ -10,9 +11,10 @@ interface Props {
   onToggle: () => void;
   onEdit: () => void;
   onDelete: () => void;
+  onRestoreRevision: (savedAt: string) => void;
 }
 
-export default function MemoryCard({ memory, index, isExpanded, onToggle, onEdit, onDelete }: Props) {
+export default function MemoryCard({ memory, index, isExpanded, onToggle, onEdit, onDelete, onRestoreRevision }: Props) {
   const season = getSeasonInfo(memory.season);
   const stype = getSmellTypeInfo(memory.smell_type);
   const emotion = getEmotionInfo(memory.emotion);
@@ -141,6 +143,9 @@ export default function MemoryCard({ memory, index, isExpanded, onToggle, onEdit
                   {memory.memory_text}
                 </p>
               </div>
+
+              <VersionHistory memory={memory} onRestore={onRestoreRevision} />
+
               <div className="mt-3 flex items-center justify-between pt-2 border-t border-paper-200/60">
                 <div className="flex items-center gap-1.5 text-[11px] text-ink-700/50">
                   <span>更新于 {formatDate(memory.updated_at)}</span>

@@ -2,8 +2,8 @@ export type Season = 'spring' | 'summer' | 'autumn' | 'winter';
 export type SmellType = 'woody' | 'floral' | 'fruity' | 'earthy' | 'spicy' | 'sweet' | 'musty' | 'fresh' | 'burnt' | 'other';
 export type Emotion = 'warm' | 'nostalgic' | 'peaceful' | 'melancholy' | 'joyful' | 'uncomfortable' | 'surprising';
 
-export interface SmellMemory {
-  id: string;
+/** 可编辑的档案字段，新增/编辑表单与旧稿快照都使用这一组字段 */
+export interface MemoryFields {
   location: string;
   source_guess: string;
   intensity: number;
@@ -14,8 +14,20 @@ export interface SmellMemory {
   color_association: string;
   emotion: Emotion;
   want_again: boolean;
+}
+
+/** 一份旧稿：某次编辑被覆盖前的完整字段快照 */
+export interface MemoryRevision extends MemoryFields {
+  /** 这份内容被新稿替换、存入旧稿列表的时间 */
+  saved_at: string;
+}
+
+export interface SmellMemory extends MemoryFields {
+  id: string;
   created_at: string;
   updated_at: string;
+  /** 旧稿列表，按 saved_at 由新到旧排列，最多保留 REVISION_LIMIT 份 */
+  revisions: MemoryRevision[];
 }
 
 export const SEASONS: { value: Season; label: string; emoji: string }[] = [

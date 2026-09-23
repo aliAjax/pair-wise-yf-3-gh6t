@@ -2,6 +2,7 @@ import type { SmellMemory } from '../utils/constants';
 
 const now = Date.now();
 const daysAgo = (d: number) => new Date(now - d * 86400000).toISOString();
+const hoursAgo = (h: number) => new Date(now - h * 3600000).toISOString();
 
 export const mockMemories: SmellMemory[] = [
   {
@@ -18,6 +19,7 @@ export const mockMemories: SmellMemory[] = [
     want_again: true,
     created_at: daysAgo(42),
     updated_at: daysAgo(42),
+    revisions: [],
   },
   {
     id: 'mock-002',
@@ -33,6 +35,7 @@ export const mockMemories: SmellMemory[] = [
     want_again: true,
     created_at: daysAgo(28),
     updated_at: daysAgo(28),
+    revisions: [],
   },
   {
     id: 'mock-003',
@@ -47,7 +50,35 @@ export const mockMemories: SmellMemory[] = [
     emotion: 'melancholy',
     want_again: true,
     created_at: daysAgo(18),
-    updated_at: daysAgo(10),
+    updated_at: hoursAgo(20),
+    revisions: [
+      {
+        location: '大学图书馆五楼角落',
+        source_guess: '旧纸张 + 冷调香水',
+        intensity: 4,
+        humidity: 6,
+        season: 'winter',
+        smell_type: 'musty',
+        memory_text: '考研冲刺的那段日子，固定坐在靠窗的位置。旁边的女生总喷一种冷调的香水，混着泛黄书页的霉味。后来我考上了，再也没见过她。',
+        color_association: '#9B8AA6',
+        emotion: 'melancholy',
+        want_again: true,
+        saved_at: hoursAgo(20),
+      },
+      {
+        location: '大学旧图书馆',
+        source_guess: '旧纸张的霉味',
+        intensity: 3,
+        humidity: 5,
+        season: 'autumn',
+        smell_type: 'musty',
+        memory_text: '考研时天天泡在图书馆旧书区，空气里都是泛黄书页的味道。',
+        color_association: '#8B7D6B',
+        emotion: 'nostalgic',
+        want_again: false,
+        saved_at: daysAgo(10),
+      },
+    ],
   },
   {
     id: 'mock-004',
@@ -63,6 +94,7 @@ export const mockMemories: SmellMemory[] = [
     want_again: true,
     created_at: daysAgo(60),
     updated_at: daysAgo(60),
+    revisions: [],
   },
   {
     id: 'mock-005',
@@ -78,6 +110,7 @@ export const mockMemories: SmellMemory[] = [
     want_again: false,
     created_at: daysAgo(100),
     updated_at: daysAgo(55),
+    revisions: [],
   },
   {
     id: 'mock-006',
@@ -93,6 +126,7 @@ export const mockMemories: SmellMemory[] = [
     want_again: true,
     created_at: daysAgo(15),
     updated_at: daysAgo(15),
+    revisions: [],
   },
   {
     id: 'mock-007',
@@ -108,6 +142,7 @@ export const mockMemories: SmellMemory[] = [
     want_again: true,
     created_at: daysAgo(5),
     updated_at: daysAgo(5),
+    revisions: [],
   },
   {
     id: 'mock-008',
@@ -122,6 +157,47 @@ export const mockMemories: SmellMemory[] = [
     emotion: 'nostalgic',
     want_again: true,
     created_at: daysAgo(3),
-    updated_at: daysAgo(2),
+    updated_at: hoursAgo(3),
+    revisions: [
+      {
+        location: '童年的海边',
+        source_guess: '咸腥海风 + 晒过的泳衣塑料味',
+        intensity: 8,
+        humidity: 10,
+        season: 'summer',
+        smell_type: 'fresh',
+        memory_text: '每年暑假都去同一个海边。海浪卷着海带的腥味扑过来，泳衣晒得发烫有塑料味。沙子钻进脚趾缝，那时候夏天好像永远过不完。',
+        color_association: '#7DA08C',
+        emotion: 'nostalgic',
+        want_again: true,
+        saved_at: hoursAgo(3),
+      },
+      {
+        location: '暑假去过的海边',
+        source_guess: '咸腥的海风',
+        intensity: 7,
+        humidity: 9,
+        season: 'summer',
+        smell_type: 'fresh',
+        memory_text: '小时候每年暑假都去海边，风里全是咸腥味，还有晒热的泳衣味。',
+        color_association: '#6B9E8A',
+        emotion: 'joyful',
+        want_again: true,
+        saved_at: hoursAgo(30),
+      },
+      {
+        location: '海边',
+        source_guess: '海风的咸味',
+        intensity: 6,
+        humidity: 8,
+        season: 'autumn',
+        smell_type: 'fresh',
+        memory_text: '去过一次海边，风是咸的。',
+        color_association: '#9AB8A8',
+        emotion: 'peaceful',
+        want_again: true,
+        saved_at: daysAgo(2),
+      },
+    ],
   },
 ];

@@ -6,7 +6,7 @@ import MemoryCard from '../components/MemoryCard';
 import MemoryModal from '../components/MemoryModal';
 import { useMemoryStore } from '../store/memoryStore';
 import type { Filters } from '../utils/helpers';
-import { filterMemories } from '../utils/helpers';
+import { filterMemories, formatDate } from '../utils/helpers';
 import type { SmellMemory } from '../utils/constants';
 import type { MemoryInput } from '../store/memoryStore';
 import { BookOpenCheck } from 'lucide-react';
@@ -18,7 +18,7 @@ const defaultFilters: Filters = {
 };
 
 export default function Home() {
-  const { memories, initIfEmpty, addMemory, updateMemory, deleteMemory } = useMemoryStore();
+  const { memories, initIfEmpty, addMemory, updateMemory, deleteMemory, restoreRevision } = useMemoryStore();
   const [filters, setFilters] = useState<Filters>(defaultFilters);
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
@@ -55,6 +55,16 @@ export default function Home() {
     if (window.confirm(msg)) {
       deleteMemory(id);
       if (expandedId === id) setExpandedId(null);
+    }
+  };
+
+  const handleRestore = (id: string, savedAt: string) => {
+    const target = memories.find((m) => m.id === id);
+    const revision = target?.revisions.find((r) => r.saved_at === savedAt);
+    const when = revision ? formatDate(revision.saved_at) : '该时间';
+    const msg = `确认把「${target?.location ?? '这段记忆'}」恢复为 ${when} 的旧稿吗？\n（当前内容会自动存入旧稿列表，不会丢失）`;
+    if (window.confirm(msg)) {
+      restoreRevision(id, savedAt);
     }
   };
 
@@ -126,6 +136,7 @@ export default function Home() {
                     onToggle={() => setExpandedId(expandedId === m.id ? null : m.id)}
                     onEdit={() => openEditModal(m)}
                     onDelete={() => handleDelete(m.id)}
+                    onRestoreRevision={(savedAt) => handleRestore(m.id, savedAt)}
                   />
                 </div>
               ))}
