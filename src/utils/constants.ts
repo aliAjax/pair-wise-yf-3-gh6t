@@ -2,6 +2,25 @@ export type Season = 'spring' | 'summer' | 'autumn' | 'winter';
 export type SmellType = 'woody' | 'floral' | 'fruity' | 'earthy' | 'spicy' | 'sweet' | 'musty' | 'fresh' | 'burnt' | 'other';
 export type Emotion = 'warm' | 'nostalgic' | 'peaceful' | 'melancholy' | 'joyful' | 'uncomfortable' | 'surprising';
 
+/** 一份旧稿：修改/恢复前被存档的记忆内容快照 */
+export interface MemoryRevision {
+  id: string;
+  saved_at: string;
+  location: string;
+  source_guess: string;
+  intensity: number;
+  humidity: number;
+  season: Season;
+  smell_type: SmellType;
+  memory_text: string;
+  color_association: string;
+  emotion: Emotion;
+  want_again: boolean;
+}
+
+/** 每条记忆最多保留的旧稿份数，更早的自动挤掉 */
+export const MAX_REVISIONS = 3;
+
 export interface SmellMemory {
   id: string;
   location: string;
@@ -16,6 +35,7 @@ export interface SmellMemory {
   want_again: boolean;
   created_at: string;
   updated_at: string;
+  revisions: MemoryRevision[];
 }
 
 export const SEASONS: { value: Season; label: string; emoji: string }[] = [

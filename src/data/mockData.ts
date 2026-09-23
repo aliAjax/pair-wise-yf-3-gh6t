@@ -18,6 +18,7 @@ export const mockMemories: SmellMemory[] = [
     want_again: true,
     created_at: daysAgo(42),
     updated_at: daysAgo(42),
+    revisions: [],
   },
   {
     id: 'mock-002',
@@ -33,6 +34,7 @@ export const mockMemories: SmellMemory[] = [
     want_again: true,
     created_at: daysAgo(28),
     updated_at: daysAgo(28),
+    revisions: [],
   },
   {
     id: 'mock-003',
@@ -48,6 +50,22 @@ export const mockMemories: SmellMemory[] = [
     want_again: true,
     created_at: daysAgo(18),
     updated_at: daysAgo(10),
+    revisions: [
+      {
+        id: 'mock-003-rev-1',
+        saved_at: daysAgo(10),
+        location: '大学图书馆五楼角落',
+        source_guess: '旧纸张',
+        intensity: 3,
+        humidity: 5,
+        season: 'autumn',
+        smell_type: 'musty',
+        memory_text: '考研冲刺的那段日子，固定坐在靠窗的那个位置。泛黄书页的霉味混着暖气的干燥，是那段时光的背景音。',
+        color_association: '#8B7355',
+        emotion: 'peaceful',
+        want_again: false,
+      },
+    ],
   },
   {
     id: 'mock-004',
@@ -63,6 +81,7 @@ export const mockMemories: SmellMemory[] = [
     want_again: true,
     created_at: daysAgo(60),
     updated_at: daysAgo(60),
+    revisions: [],
   },
   {
     id: 'mock-005',
@@ -78,6 +97,7 @@ export const mockMemories: SmellMemory[] = [
     want_again: false,
     created_at: daysAgo(100),
     updated_at: daysAgo(55),
+    revisions: [],
   },
   {
     id: 'mock-006',
@@ -93,6 +113,7 @@ export const mockMemories: SmellMemory[] = [
     want_again: true,
     created_at: daysAgo(15),
     updated_at: daysAgo(15),
+    revisions: [],
   },
   {
     id: 'mock-007',
@@ -108,6 +129,7 @@ export const mockMemories: SmellMemory[] = [
     want_again: true,
     created_at: daysAgo(5),
     updated_at: daysAgo(5),
+    revisions: [],
   },
   {
     id: 'mock-008',
@@ -123,5 +145,6 @@ export const mockMemories: SmellMemory[] = [
     want_again: true,
     created_at: daysAgo(3),
     updated_at: daysAgo(2),
+    revisions: [],
   },
 ];

@@ -18,7 +18,7 @@ const defaultFilters: Filters = {
 };
 
 export default function Home() {
-  const { memories, initIfEmpty, addMemory, updateMemory, deleteMemory } = useMemoryStore();
+  const { memories, initIfEmpty, addMemory, updateMemory, restoreRevision, deleteMemory } = useMemoryStore();
   const [filters, setFilters] = useState<Filters>(defaultFilters);
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
@@ -56,6 +56,10 @@ export default function Home() {
       deleteMemory(id);
       if (expandedId === id) setExpandedId(null);
     }
+  };
+
+  const handleRestore = (id: string, revisionId: string) => {
+    restoreRevision(id, revisionId);
   };
 
   const scrollToCard = (id: string) => {
@@ -126,6 +130,7 @@ export default function Home() {
                     onToggle={() => setExpandedId(expandedId === m.id ? null : m.id)}
                     onEdit={() => openEditModal(m)}
                     onDelete={() => handleDelete(m.id)}
+                    onRestore={(revId) => handleRestore(m.id, revId)}
                   />
                 </div>
               ))}

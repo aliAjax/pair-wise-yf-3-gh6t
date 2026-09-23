@@ -1,7 +1,7 @@
 import type { SmellMemory } from '../utils/constants';
-import { getSeasonInfo, getSmellTypeInfo, getEmotionInfo } from '../utils/constants';
+import { getSeasonInfo, getSmellTypeInfo, getEmotionInfo, MAX_REVISIONS } from '../utils/constants';
 import { formatDate, contrastTextColor } from '../utils/helpers';
-import { Pencil, Trash2, ChevronDown, ChevronUp, Heart } from 'lucide-react';
+import { Pencil, Trash2, ChevronDown, ChevronUp, Heart, History, Undo2 } from 'lucide-react';
 
 interface Props {
   memory: SmellMemory;
@@ -10,9 +10,10 @@ interface Props {
   onToggle: () => void;
   onEdit: () => void;
   onDelete: () => void;
+  onRestore: (revisionId: string) => void;
 }
 
-export default function MemoryCard({ memory, index, isExpanded, onToggle, onEdit, onDelete }: Props) {
+export default function MemoryCard({ memory, index, isExpanded, onToggle, onEdit, onDelete, onRestore }: Props) {
   const season = getSeasonInfo(memory.season);
   const stype = getSmellTypeInfo(memory.smell_type);
   const emotion = getEmotionInfo(memory.emotion);
@@ -140,6 +141,68 @@ export default function MemoryCard({ memory, index, isExpanded, onToggle, onEdit
                 <p className="font-serif text-[15px] leading-relaxed text-ink-800 whitespace-pre-wrap">
                   {memory.memory_text}
                 </p>
+              </div>
+
+              <div className="mt-3 p-4 rounded-xl bg-paper-100/70 border border-paper-200/80">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="font-hand text-lg text-ochre-600 inline-flex items-center gap-1.5">
+                    <History className="w-4 h-4" /> 旧稿
+                  </span>
+                  <span className="text-[11px] text-ink-700/50">
+                    {memory.revisions.length > 0
+                      ? `${memory.revisions.length} / ${MAX_REVISIONS} 份`
+                      : `最多保留 ${MAX_REVISIONS} 份`}
+                  </span>
+                </div>
+                {memory.revisions.length === 0 ? (
+                  <p className="text-xs text-ink-700/50 leading-relaxed">
+                    还没有旧稿。每次保存修改前，会把当时的内容自动留一份在这里。
+                  </p>
+                ) : (
+                  <ul className="space-y-2">
+                    {memory.revisions.map((rev) => {
+                      const revSeason = getSeasonInfo(rev.season);
+                      return (
+                        <li
+                          key={rev.id}
+                          className="flex items-center gap-3 rounded-lg bg-paper-50 border border-paper-200/80 px-3 py-2"
+                        >
+                          <div className="min-w-0 flex-1">
+                            <div className="flex items-center gap-1.5 text-[11px] text-ink-700/60">
+                              <span className="shrink-0">{formatDate(rev.saved_at)}</span>
+                              <span className="text-paper-400">·</span>
+                              <span className="shrink-0">{revSeason.emoji} {revSeason.label}</span>
+                              <span className="text-paper-400">·</span>
+                              <span className="truncate">{rev.location}</span>
+                            </div>
+                            <div className="mt-1.5 flex items-center gap-2">
+                              <span className="text-[11px] text-ink-700/60 shrink-0">强度</span>
+                              <div className="h-1 w-20 bg-paper-200 rounded-full overflow-hidden">
+                                <div
+                                  className="h-full rounded-full"
+                                  style={{
+                                    width: `${rev.intensity * 10}%`,
+                                    background: 'linear-gradient(90deg, #D4B487 0%, #8B5A2B 60%, #5C3A1D 100%)',
+                                  }}
+                                />
+                              </div>
+                              <span className="text-[11px] font-semibold text-ochre-600 shrink-0">
+                                {rev.intensity}/10
+                              </span>
+                            </div>
+                          </div>
+                          <button
+                            onClick={(e) => { e.stopPropagation(); onRestore(rev.id); }}
+                            className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs text-moss-600 hover:bg-moss-100 transition-colors shrink-0"
+                            title="恢复成这份旧稿，当前内容会存入旧稿列表"
+                          >
+                            <Undo2 className="w-3.5 h-3.5" /> 恢复
+                          </button>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                )}
               </div>
               <div className="mt-3 flex items-center justify-between pt-2 border-t border-paper-200/60">
                 <div className="flex items-center gap-1.5 text-[11px] text-ink-700/50">
